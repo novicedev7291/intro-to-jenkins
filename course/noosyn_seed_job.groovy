@@ -2,10 +2,6 @@ import javaposse.jobdsl.dsl.DslFactory
 
 DslFactory factory = this
 
-repos = [
-        [name: "analytics-svc", url: "https://bitbucket.org/noosyn/analytics-svc.git", branch: "dev"]
-]
-
 
 factory.job('noosyn-seed-job'){
     triggers {
@@ -15,27 +11,11 @@ factory.job('noosyn-seed-job'){
         github('novicedev7291/intro-to-jenkins')
     }
     steps {
-        dsl(
-                """
-                repos.forEach({
-
-   factory.pipelineJob(it.name + "-" + it.branch){
-       triggers {
-           githubPush()
-       }
-       logRotator{
-           logRotator(0, 20)
-       }
-       definition {
-           cps {
-               script(readFileFromWorkspace("course/example_job.groovy"))
-               sandbox()
-           }
-       }
-
-   }
-});
-                """
-        )
+        dsl{
+            external("jenkins/intro-to-jenkins/course/job_creator.groovy")
+            removeAction("DISABLE")
+            removeViewAction("DELETE")
+            ignoreExisting(false)
+        }
     }
 }
