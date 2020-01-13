@@ -6,22 +6,25 @@ repos = [
         [name: "analytics-svc", url: "https://bitbucket.org/noosyn/analytics-svc.git", branch: "dev"]
 ]
 
-repos.forEach({
-    factory.job('noosyn-seed-job'){
-        triggers {
-            githubPush()
-        }
-        scm {
-            github('novicedev7291/intro-to-jenkins')
-        }
+
+factory.job('noosyn-seed-job'){
+    triggers {
+        githubPush()
     }
+    scm {
+        github('novicedev7291/intro-to-jenkins')
+    }
+    steps {
+        dsl(
+                """
+                repos.forEach({
 
    factory.pipelineJob(it.name + "-" + it.branch){
        triggers {
            githubPush()
        }
        logRotator{
-           logRotator(null, 20)
+           logRotator(0, 20)
        }
        definition {
            cps {
@@ -32,3 +35,7 @@ repos.forEach({
 
    }
 });
+                """
+        )
+    }
+}

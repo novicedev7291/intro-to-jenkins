@@ -18,4 +18,14 @@ public class JobScriptsTest{
         ));
         loader.runScript(scriptText);
     }
+
+    @Test
+    public void should_compile_noosyn_scripts () throws IOException{
+        MemoryJobManagement jm = new MemoryJobManagement();
+        DslScriptLoader loader = new DslScriptLoader(jm);
+        String scriptText = new String (Files.readAllBytes(
+                new File("course/noosyn_seed_job.groovy").toPath()
+        ));
+        loader.runScript(scriptText);
+    }
 }
