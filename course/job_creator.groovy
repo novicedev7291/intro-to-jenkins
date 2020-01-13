@@ -17,7 +17,7 @@ repos.forEach({
         }
         definition {
             cps {
-                script(readFileFromWorkspace("jenkins/intro-tojenkins/course/example_job.groovy"))
+                script(readFileFromWorkspace("course/example_job.groovy"))
                 sandbox()
             }
         }
